@@ -26,7 +26,7 @@ export default function OrganizationProfile({
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-5">
-        <svg className="w-5 h-5 text-[#1a56db]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-5 h-5 text-[#1d2d5c]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <h2 className="text-lg font-semibold text-gray-900">Organization Profile</h2>
@@ -42,7 +42,7 @@ export default function OrganizationProfile({
         <select
           value={selectedLicenseId}
           onChange={(e) => onLicenseChange(e.target.value)}
-          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1a56db]/30 focus:border-[#1a56db]"
+          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c]"
         >
           {tierOrder.map(tier => tiers[tier] && (
             <optgroup key={tier} label={TIER_LABELS[tier]}>
@@ -68,7 +68,7 @@ export default function OrganizationProfile({
             type="number"
             value={userCount}
             onChange={(e) => setUserCount(Math.max(1, parseInt(e.target.value, 10) || 1))}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1a56db]/30 focus:border-[#1a56db]"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c]"
           />
         </div>
 
@@ -81,14 +81,14 @@ export default function OrganizationProfile({
               value={monthlyCost}
               onChange={(e) => setMonthlyCost(Math.max(0, parseFloat(e.target.value) || 0))}
               step="0.01"
-              className="w-full pl-7 pr-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1a56db]/30 focus:border-[#1a56db]"
+              className="w-full pl-7 pr-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c]"
             />
           </div>
         </div>
 
         <div>
           <label className="text-sm text-gray-600 mb-2 block">Annual License Spend</label>
-          <div className="text-2xl font-bold text-[#1a56db]">
+          <div className="text-2xl font-bold text-[#1d2d5c]">
             {formatCurrency(annualSpend)}
           </div>
         </div>
