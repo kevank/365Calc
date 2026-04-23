@@ -114,7 +114,7 @@ function App() {
       <Header onReset={handleReset} />
 
       <div className="bg-[#1d2d5c] border-b-4 border-[#f59e0b]">
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold text-white mb-1">
             Microsoft 365 Value Calculator
           </h1>
@@ -124,46 +124,50 @@ function App() {
         </div>
       </div>
 
-      <main className="max-w-5xl mx-auto px-4 pb-12 pt-8">
-        <OrganizationProfile
-          licenses={licenses}
-          selectedLicenseId={selectedLicenseId}
-          onLicenseChange={handleLicenseChange}
-          userCount={userCount}
-          setUserCount={setUserCount}
-          monthlyCost={monthlyCost}
-          setMonthlyCost={setMonthlyCost}
-          annualSpend={calculations.annualSpend}
-        />
+      <main className="max-w-7xl mx-auto px-4 pb-12 pt-8">
+        <div className="lg:grid lg:grid-cols-[360px_1fr] lg:gap-8 lg:items-start">
+          <aside className="lg:sticky lg:top-20 lg:self-start space-y-4 mb-6 lg:mb-0">
+            <OrganizationProfile
+              licenses={licenses}
+              selectedLicenseId={selectedLicenseId}
+              onLicenseChange={handleLicenseChange}
+              userCount={userCount}
+              setUserCount={setUserCount}
+              monthlyCost={monthlyCost}
+              setMonthlyCost={setMonthlyCost}
+              annualSpend={calculations.annualSpend}
+            />
 
-        <SummaryBar calculations={calculations} />
+            <SummaryBar calculations={calculations} />
 
-        <div className="mt-8 mb-4">
-          <h2 className="text-xl font-semibold text-[#1d2d5c]">
-            {selectedLicense.shortName} Feature Categories
-          </h2>
-          <p className="text-gray-500 mt-1 text-sm">
-            For each feature, indicate whether you're currently using a third-party tool, have activated the {selectedLicense.shortName} capability, or haven't activated it yet.
-          </p>
-        </div>
+            <button
+              onClick={() => setShowSummary(true)}
+              className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-white font-semibold py-3 px-6 rounded-lg transition-colors cursor-pointer shadow-sm"
+            >
+              View Executive Summary
+            </button>
+          </aside>
 
-        {filteredCategories.map(category => (
-          <FeatureCategory
-            key={category.id}
-            category={category}
-            featureStates={featureStates}
-            onFeatureChange={handleFeatureChange}
-            userCount={userCount}
-          />
-        ))}
+          <section>
+            <div className="mb-5">
+              <h2 className="text-xl font-semibold text-[#1d2d5c]">
+                {selectedLicense.shortName} Feature Categories
+              </h2>
+              <p className="text-gray-500 mt-1 text-sm">
+                For each feature, indicate whether you're currently using a third-party tool, have activated the {selectedLicense.shortName} capability, or haven't activated it yet.
+              </p>
+            </div>
 
-        <div className="mt-8 text-center">
-          <button
-            onClick={() => setShowSummary(true)}
-            className="bg-[#1d2d5c] hover:bg-[#121d40] text-white font-semibold py-3 px-8 rounded-lg transition-colors cursor-pointer"
-          >
-            View Executive Summary
-          </button>
+            {filteredCategories.map(category => (
+              <FeatureCategory
+                key={category.id}
+                category={category}
+                featureStates={featureStates}
+                onFeatureChange={handleFeatureChange}
+                userCount={userCount}
+              />
+            ))}
+          </section>
         </div>
       </main>
     </div>

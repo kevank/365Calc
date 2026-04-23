@@ -2,55 +2,57 @@ const formatCurrency = (value) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
 
 export default function SummaryBar({ calculations }) {
-  const { annualSavings, unrealizedValue, realizedValue, valueRealization } = calculations
+  const { annualSavings, unrealizedValue, realizedValue, valueRealization, totalEmbeddedValue } = calculations
+  const realizedPct = totalEmbeddedValue > 0 ? (realizedValue / totalEmbeddedValue) * 100 : 0
+  const unrealizedPct = totalEmbeddedValue > 0 ? (unrealizedValue / totalEmbeddedValue) * 100 : 0
 
   return (
-    <div className="mt-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-      <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
-        <SummaryItem
+    <div className="bg-[#1d2d5c] rounded-xl shadow-sm overflow-hidden text-white">
+      <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+        <h2 className="text-sm font-semibold uppercase tracking-wide">Value Realization</h2>
+        <span className="text-2xl font-bold text-[#f59e0b]">{valueRealization}%</span>
+      </div>
+
+      <div className="px-5 pt-4">
+        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden flex">
+          {realizedValue > 0 && (
+            <div className="bg-emerald-400 h-full" style={{ width: `${realizedPct}%` }} />
+          )}
+          {unrealizedValue > 0 && (
+            <div className="bg-[#f59e0b] h-full" style={{ width: `${unrealizedPct}%` }} />
+          )}
+        </div>
+      </div>
+
+      <div className="p-5 space-y-3">
+        <Metric
           label="Annual Savings"
           value={formatCurrency(annualSavings)}
-          valueColor="text-emerald-600"
+          valueColor="text-emerald-400"
           tooltip="Savings from replacing third-party tools with included license features"
         />
-        <SummaryItem
-          label="Unrealized Value"
-          value={formatCurrency(unrealizedValue)}
-          valueColor="text-amber-500"
-          tooltip="Value of included features not yet activated"
-        />
-        <SummaryItem
+        <Metric
           label="Realized Value"
           value={formatCurrency(realizedValue)}
-          valueColor="text-emerald-600"
+          valueColor="text-emerald-400"
           tooltip="Value of included features being actively used"
         />
-        <SummaryItem
-          label="Value Realization"
-          value={`${valueRealization}%`}
-          valueColor="text-gray-900"
-          tooltip="Percentage of total embedded value being utilized"
+        <Metric
+          label="Unrealized Value"
+          value={formatCurrency(unrealizedValue)}
+          valueColor="text-[#f59e0b]"
+          tooltip="Value of included features not yet activated"
         />
       </div>
     </div>
   )
 }
 
-function SummaryItem({ label, value, valueColor, tooltip }) {
+function Metric({ label, value, valueColor, tooltip }) {
   return (
-    <div className="px-6 py-4 text-center group relative">
-      <div className="text-xs text-gray-500 mb-1 flex items-center justify-center gap-1">
-        {label}
-        <span className="relative">
-          <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-            {tooltip}
-          </span>
-        </span>
-      </div>
-      <div className={`text-xl font-bold ${valueColor}`}>{value}</div>
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-slate-300" title={tooltip}>{label}</span>
+      <span className={`text-base font-bold ${valueColor}`}>{value}</span>
     </div>
   )
 }
