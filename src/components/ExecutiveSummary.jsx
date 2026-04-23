@@ -1,7 +1,7 @@
 import aitLogo from '../assets/ait-logo.png'
 
 const formatCurrency = (value) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value)
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
 
 export default function ExecutiveSummary({ calculations, featureStates, featureCategories, userCount, monthlyCost, selectedLicense, onBack }) {
   const licenseName = selectedLicense?.name || 'Microsoft 365'
@@ -49,7 +49,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
             {licenseName} Value Assessment
           </h1>
           <p className="text-slate-300">
-            Summary for {userCount} users at ${monthlyCost}/user/month
+            Summary for {userCount} users at ${Number(monthlyCost).toFixed(2)}/user/month
           </p>
         </div>
       </div>
