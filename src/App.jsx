@@ -113,16 +113,18 @@ function App() {
     <div className="min-h-screen bg-[#f4f5f8]">
       <Header onReset={handleReset} />
 
-      <main className="max-w-5xl mx-auto px-4 pb-12">
-        <div className="pt-8 pb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">
+      <div className="bg-[#1d2d5c] border-b-4 border-[#f59e0b]">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold text-white mb-1">
             Microsoft 365 Value Calculator
           </h1>
-          <p className="text-gray-500">
+          <p className="text-slate-300">
             Select a license and configure your current tool usage to calculate potential savings
           </p>
         </div>
+      </div>
 
+      <main className="max-w-5xl mx-auto px-4 pb-12 pt-8">
         <OrganizationProfile
           licenses={licenses}
           selectedLicenseId={selectedLicenseId}
@@ -137,7 +139,7 @@ function App() {
         <SummaryBar calculations={calculations} />
 
         <div className="mt-8 mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-[#1d2d5c]">
             {selectedLicense.shortName} Feature Categories
           </h2>
           <p className="text-gray-500 mt-1 text-sm">
