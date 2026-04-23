@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useDecimalInput } from '../hooks/useDecimalInput'
 
 const iconMap = {
   shield: (
@@ -112,6 +113,12 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
     { value: 'not-activated', label: 'Not yet activated' },
   ]
 
+  const setCost = useCallback(
+    (next) => onChange(feature.id, 'cost', next),
+    [onChange, feature.id]
+  )
+  const costInput = useDecimalInput(state.cost, setCost)
+
   return (
     <div className={`px-6 py-4 ${!isLast ? 'border-b border-gray-50' : ''}`}>
       <div className="grid grid-cols-[1fr_auto_auto] items-start gap-x-6 gap-y-1">
@@ -182,10 +189,7 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
           <div className="relative w-24">
             <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
             <input
-              type="number"
-              value={state.cost}
-              onChange={(e) => onChange(feature.id, 'cost', Math.max(0, parseFloat(e.target.value) || 0))}
-              step="0.50"
+              {...costInput}
               className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c] text-right"
             />
           </div>

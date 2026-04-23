@@ -1,3 +1,5 @@
+import { useDecimalInput } from '../hooks/useDecimalInput'
+
 const formatCurrency = (value) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
 
@@ -22,6 +24,8 @@ export default function OrganizationProfile({
     return acc
   }, {})
   const tierOrder = ['business', 'enterprise']
+
+  const monthlyCostInput = useDecimalInput(monthlyCost, setMonthlyCost)
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
@@ -77,10 +81,7 @@ export default function OrganizationProfile({
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
             <input
-              type="number"
-              value={monthlyCost}
-              onChange={(e) => setMonthlyCost(Math.max(0, parseFloat(e.target.value) || 0))}
-              step="0.01"
+              {...monthlyCostInput}
               className="w-full pl-7 pr-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c]"
             />
           </div>
