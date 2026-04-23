@@ -1,7 +1,9 @@
 const formatCurrency = (value) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value)
 
-export default function ExecutiveSummary({ calculations, featureStates, featureCategories, userCount, monthlyCost, onBack }) {
+export default function ExecutiveSummary({ calculations, featureStates, featureCategories, userCount, monthlyCost, selectedLicense, onBack }) {
+  const licenseName = selectedLicense?.name || 'Microsoft 365'
+  const licenseShort = selectedLicense?.shortName || 'Microsoft 365'
   const { annualSpend, annualSavings, unrealizedValue, realizedValue, valueRealization, totalEmbeddedValue } = calculations
 
   const thirdPartyFeatures = []
@@ -44,7 +46,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
 
       <main className="max-w-5xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Microsoft 365 Business Premium Value Assessment
+          {licenseName} Value Assessment
         </h1>
         <p className="text-gray-500 mb-8">
           Summary for {userCount} users at ${monthlyCost}/user/month
@@ -52,7 +54,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
 
         {/* Key Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <MetricCard label="Annual BP Spend" value={formatCurrency(annualSpend)} color="text-gray-900" bg="bg-white" />
+          <MetricCard label="Annual License Spend" value={formatCurrency(annualSpend)} color="text-gray-900" bg="bg-white" />
           <MetricCard label="Total Embedded Value" value={formatCurrency(totalEmbeddedValue)} color="text-[#1a56db]" bg="bg-blue-50" />
           <MetricCard label="Annual Savings" value={formatCurrency(annualSavings)} color="text-emerald-600" bg="bg-emerald-50" />
           <MetricCard label="Value Realization" value={`${valueRealization}%`} color="text-gray-900" bg="bg-white" />
@@ -95,7 +97,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
         {thirdPartyFeatures.length > 0 && (
           <FeatureSection
             title="Third-Party Tool Consolidation Opportunities"
-            subtitle="These features are being paid for separately but are included in Business Premium"
+            subtitle={`These features are being paid for separately but are included in ${licenseShort}`}
             features={thirdPartyFeatures}
             badgeColor="bg-emerald-100 text-emerald-700"
             badgeLabel="Savings"
@@ -104,8 +106,8 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
 
         {activatedFeatures.length > 0 && (
           <FeatureSection
-            title="Activated Business Premium Features"
-            subtitle="These features are being utilized from your Business Premium license"
+            title={`Activated ${licenseShort} Features`}
+            subtitle={`These features are being utilized from your ${licenseShort} license`}
             features={activatedFeatures}
             badgeColor="bg-blue-100 text-blue-700"
             badgeLabel="Active"
@@ -115,7 +117,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
         {notActivatedFeatures.length > 0 && (
           <FeatureSection
             title="Unrealized Value - Features Not Yet Activated"
-            subtitle="These Business Premium features are available but not yet deployed"
+            subtitle={`These ${licenseShort} features are available but not yet deployed`}
             features={notActivatedFeatures}
             badgeColor="bg-amber-100 text-amber-700"
             badgeLabel="Opportunity"
@@ -132,7 +134,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span>
-                  <strong>Consolidate {thirdPartyFeatures.length} third-party tool(s)</strong> to save {formatCurrency(annualSavings)} annually by migrating to the equivalent Business Premium features.
+                  <strong>Consolidate {thirdPartyFeatures.length} third-party tool(s)</strong> to save {formatCurrency(annualSavings)} annually by migrating to the equivalent {licenseShort} features.
                 </span>
               </li>
             )}
@@ -151,7 +153,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
               <span>
-                Your Business Premium license contains <strong>{formatCurrency(totalEmbeddedValue)}</strong> in total embedded annual value across all feature categories.
+                Your {licenseShort} license contains <strong>{formatCurrency(totalEmbeddedValue)}</strong> in total embedded annual value across all feature categories.
               </span>
             </li>
           </ul>
