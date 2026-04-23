@@ -108,8 +108,8 @@ const formatCurrency = (value) =>
 function FeatureRow({ feature, state, onChange, userCount, isLast }) {
   const statusOptions = [
     { value: 'third-party', label: 'Using third-party tool' },
-    { value: 'activated', label: 'BP feature activated' },
-    { value: 'not-activated', label: 'BP feature not activated' },
+    { value: 'activated', label: 'Activated' },
+    { value: 'not-activated', label: 'Not yet activated' },
   ]
 
   return (

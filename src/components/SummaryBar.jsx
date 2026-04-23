@@ -11,19 +11,19 @@ export default function SummaryBar({ calculations }) {
           label="Annual Savings"
           value={formatCurrency(annualSavings)}
           valueColor="text-emerald-600"
-          tooltip="Savings from replacing third-party tools with Business Premium features"
+          tooltip="Savings from replacing third-party tools with included license features"
         />
         <SummaryItem
           label="Unrealized Value"
           value={formatCurrency(unrealizedValue)}
           valueColor="text-amber-500"
-          tooltip="Value of Business Premium features not yet activated"
+          tooltip="Value of included features not yet activated"
         />
         <SummaryItem
           label="Realized Value"
           value={formatCurrency(realizedValue)}
           valueColor="text-emerald-600"
-          tooltip="Value of Business Premium features being actively used"
+          tooltip="Value of included features being actively used"
         />
         <SummaryItem
           label="Value Realization"
