@@ -58,7 +58,7 @@ const iconMap = {
   ),
 }
 
-export default function FeatureCategory({ category, featureStates, onFeatureChange }) {
+export default function FeatureCategory({ category, featureStates, onFeatureChange, userCount }) {
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -92,6 +92,7 @@ export default function FeatureCategory({ category, featureStates, onFeatureChan
               feature={feature}
               state={featureStates[feature.id]}
               onChange={onFeatureChange}
+              userCount={userCount}
               isLast={idx === category.features.length - 1}
             />
           ))}
@@ -101,7 +102,10 @@ export default function FeatureCategory({ category, featureStates, onFeatureChan
   )
 }
 
-function FeatureRow({ feature, state, onChange, isLast }) {
+const formatCurrency = (value) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value)
+
+function FeatureRow({ feature, state, onChange, userCount, isLast }) {
   const statusOptions = [
     { value: 'third-party', label: 'Using third-party tool' },
     { value: 'activated', label: 'BP feature activated' },
@@ -185,6 +189,11 @@ function FeatureRow({ feature, state, onChange, isLast }) {
               className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#1a56db]/30 focus:border-[#1a56db] text-right"
             />
           </div>
+          {state.status === 'third-party' && (
+            <span className="text-xs font-semibold text-red-600 whitespace-nowrap">
+              Saving {formatCurrency(state.cost * userCount * 12)}/yr
+            </span>
+          )}
         </div>
       </div>
     </div>

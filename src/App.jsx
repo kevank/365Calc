@@ -151,6 +151,7 @@ function App() {
             category={category}
             featureStates={featureStates}
             onFeatureChange={handleFeatureChange}
+            userCount={userCount}
           />
         ))}
 
