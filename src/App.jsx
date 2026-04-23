@@ -1,27 +1,37 @@
 import { useState, useMemo, useCallback } from 'react'
-import { featureCategories, BUSINESS_PREMIUM_MONTHLY_COST } from './data/features'
+import { featureCategories, licenses, DEFAULT_LICENSE_ID } from './data/features'
 import Header from './components/Header'
 import OrganizationProfile from './components/OrganizationProfile'
 import SummaryBar from './components/SummaryBar'
 import FeatureCategory from './components/FeatureCategory'
 import ExecutiveSummary from './components/ExecutiveSummary'
-import './index.css'
+
+const buildInitialFeatureStates = () => {
+  const initial = {}
+  featureCategories.forEach(cat => {
+    cat.features.forEach(feature => {
+      initial[feature.id] = { status: 'none', cost: feature.defaultCost }
+    })
+  })
+  return initial
+}
+
+const getLicense = (id) => licenses.find(l => l.id === id) || licenses.find(l => l.id === DEFAULT_LICENSE_ID)
 
 function App() {
+  const [selectedLicenseId, setSelectedLicenseId] = useState(DEFAULT_LICENSE_ID)
   const [userCount, setUserCount] = useState(50)
-  const [monthlyCost, setMonthlyCost] = useState(BUSINESS_PREMIUM_MONTHLY_COST)
+  const [monthlyCost, setMonthlyCost] = useState(getLicense(DEFAULT_LICENSE_ID).monthlyCost)
   const [showSummary, setShowSummary] = useState(false)
+  const [featureStates, setFeatureStates] = useState(buildInitialFeatureStates)
 
-  // Feature states: { featureId: { status: 'none'|'third-party'|'activated'|'not-activated', cost: number } }
-  const [featureStates, setFeatureStates] = useState(() => {
-    const initial = {}
-    featureCategories.forEach(cat => {
-      cat.features.forEach(feature => {
-        initial[feature.id] = { status: 'none', cost: feature.defaultCost }
-      })
-    })
-    return initial
-  })
+  const selectedLicense = getLicense(selectedLicenseId)
+
+  const handleLicenseChange = useCallback((licenseId) => {
+    const license = getLicense(licenseId)
+    setSelectedLicenseId(license.id)
+    setMonthlyCost(license.monthlyCost)
+  }, [])
 
   const handleFeatureChange = useCallback((featureId, field, value) => {
     setFeatureStates(prev => ({
@@ -30,6 +40,15 @@ function App() {
     }))
   }, [])
 
+  const filteredCategories = useMemo(() => {
+    return featureCategories
+      .map(cat => ({
+        ...cat,
+        features: cat.features.filter(f => f.includedIn.includes(selectedLicenseId)),
+      }))
+      .filter(cat => cat.features.length > 0)
+  }, [selectedLicenseId])
+
   const calculations = useMemo(() => {
     const annualSpend = userCount * monthlyCost * 12
 
@@ -37,7 +56,7 @@ function App() {
     let totalEmbeddedValue = 0
     let realizedValue = 0
 
-    featureCategories.forEach(cat => {
+    filteredCategories.forEach(cat => {
       cat.features.forEach(feature => {
         const state = featureStates[feature.id]
         const featureAnnualValue = state.cost * userCount * 12
@@ -50,7 +69,6 @@ function App() {
         } else if (state.status === 'activated') {
           realizedValue += featureAnnualValue
         }
-        // 'not-activated' and 'none' contribute to unrealized
       })
     })
 
@@ -67,20 +85,13 @@ function App() {
       valueRealization,
       totalEmbeddedValue,
     }
-  }, [userCount, monthlyCost, featureStates])
+  }, [userCount, monthlyCost, featureStates, filteredCategories])
 
   const handleReset = useCallback(() => {
+    setSelectedLicenseId(DEFAULT_LICENSE_ID)
     setUserCount(50)
-    setMonthlyCost(BUSINESS_PREMIUM_MONTHLY_COST)
-    setFeatureStates(() => {
-      const initial = {}
-      featureCategories.forEach(cat => {
-        cat.features.forEach(feature => {
-          initial[feature.id] = { status: 'none', cost: feature.defaultCost }
-        })
-      })
-      return initial
-    })
+    setMonthlyCost(getLicense(DEFAULT_LICENSE_ID).monthlyCost)
+    setFeatureStates(buildInitialFeatureStates())
     setShowSummary(false)
   }, [])
 
@@ -89,9 +100,10 @@ function App() {
       <ExecutiveSummary
         calculations={calculations}
         featureStates={featureStates}
-        featureCategories={featureCategories}
+        featureCategories={filteredCategories}
         userCount={userCount}
         monthlyCost={monthlyCost}
+        selectedLicense={selectedLicense}
         onBack={() => setShowSummary(false)}
       />
     )
@@ -104,14 +116,17 @@ function App() {
       <main className="max-w-5xl mx-auto px-4 pb-12">
         <div className="pt-8 pb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            Business Premium Value Calculator
+            Microsoft 365 Value Calculator
           </h1>
           <p className="text-gray-500">
-            Configure your current tool usage to calculate potential savings
+            Select a license and configure your current tool usage to calculate potential savings
           </p>
         </div>
 
         <OrganizationProfile
+          licenses={licenses}
+          selectedLicenseId={selectedLicenseId}
+          onLicenseChange={handleLicenseChange}
           userCount={userCount}
           setUserCount={setUserCount}
           monthlyCost={monthlyCost}
@@ -123,14 +138,14 @@ function App() {
 
         <div className="mt-8 mb-4">
           <h2 className="text-xl font-semibold text-gray-900">
-            Business Premium Feature Categories
+            {selectedLicense.shortName} Feature Categories
           </h2>
           <p className="text-gray-500 mt-1 text-sm">
-            For each feature, indicate whether you're currently using a third-party tool, have activated the Business Premium capability, or haven't activated it yet.
+            For each feature, indicate whether you're currently using a third-party tool, have activated the {selectedLicense.shortName} capability, or haven't activated it yet.
           </p>
         </div>
 
-        {featureCategories.map(category => (
+        {filteredCategories.map(category => (
           <FeatureCategory
             key={category.id}
             category={category}
