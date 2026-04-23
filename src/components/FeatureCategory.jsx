@@ -68,7 +68,7 @@ export default function FeatureCategory({ category, featureStates, onFeatureChan
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[#e8eefb] text-[#1a56db] flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg bg-[#e5e9f2] text-[#1d2d5c] flex items-center justify-center flex-shrink-0">
             {iconMap[category.icon]}
           </div>
           <div className="text-left">
@@ -186,7 +186,7 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
               value={state.cost}
               onChange={(e) => onChange(feature.id, 'cost', Math.max(0, parseFloat(e.target.value) || 0))}
               step="0.50"
-              className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#1a56db]/30 focus:border-[#1a56db] text-right"
+              className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c] text-right"
             />
           </div>
           {state.status === 'third-party' && (

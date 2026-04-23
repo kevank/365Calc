@@ -110,7 +110,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#eef2f7]">
+    <div className="min-h-screen bg-[#f4f5f8]">
       <Header onReset={handleReset} />
 
       <main className="max-w-5xl mx-auto px-4 pb-12">
@@ -158,7 +158,7 @@ function App() {
         <div className="mt-8 text-center">
           <button
             onClick={() => setShowSummary(true)}
-            className="bg-[#1a56db] hover:bg-[#1240a8] text-white font-semibold py-3 px-8 rounded-lg transition-colors cursor-pointer"
+            className="bg-[#1d2d5c] hover:bg-[#121d40] text-white font-semibold py-3 px-8 rounded-lg transition-colors cursor-pointer"
           >
             View Executive Summary
           </button>
