@@ -106,13 +106,13 @@ export default function FeatureCategory({ category, featureStates, onFeatureChan
 const formatCurrency = (value) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
 
-function FeatureRow({ feature, state, onChange, userCount, isLast }) {
-  const statusOptions = [
-    { value: 'third-party', label: 'Using third-party tool' },
-    { value: 'activated', label: 'Activated' },
-    { value: 'not-activated', label: 'Not yet activated' },
-  ]
+const STATUS_OPTIONS = [
+  { value: 'third-party', label: 'Third-party', activeClass: 'bg-emerald-500 text-white border-emerald-500' },
+  { value: 'activated', label: 'Activated', activeClass: 'bg-[#1d2d5c] text-white border-[#1d2d5c]' },
+  { value: 'not-activated', label: 'Not active', activeClass: 'bg-[#f59e0b] text-white border-[#f59e0b]' },
+]
 
+function FeatureRow({ feature, state, onChange, userCount, isLast }) {
   const setCost = useCallback(
     (next) => onChange(feature.id, 'cost', next),
     [onChange, feature.id]
@@ -120,9 +120,9 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
   const costInput = useDecimalInput(state.cost, setCost)
 
   return (
-    <div className={`px-6 py-4 ${!isLast ? 'border-b border-gray-50' : ''}`}>
-      <div className="grid grid-cols-[1fr_auto_auto] items-start gap-x-6 gap-y-1">
-        <div className="min-w-0">
+    <div className={`px-6 py-3 ${!isLast ? 'border-b border-gray-50' : ''} hover:bg-gray-50/50 transition-colors`}>
+      <div className="flex items-center gap-4 flex-wrap">
+        <div className="min-w-0 flex-1 min-w-[180px]">
           <div className="flex items-center gap-1.5">
             <span className="font-medium text-gray-800 text-sm">{feature.name}</span>
             <div className="group relative">
@@ -135,67 +135,47 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
               </div>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-0.5">vs. {feature.competitors}</p>
+          <p className="text-xs text-gray-400 mt-0.5 truncate">vs. {feature.competitors}</p>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          {statusOptions.map(opt => (
-            <label
-              key={opt.value}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs cursor-pointer transition-colors border ${
-                state.status === opt.value
-                  ? opt.value === 'third-party'
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                    : opt.value === 'activated'
-                    ? 'bg-blue-50 border-blue-200 text-blue-700'
-                    : 'bg-gray-100 border-gray-300 text-gray-600'
-                  : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'
-              }`}
-            >
-              <input
-                type="radio"
-                name={`feature-${feature.id}`}
-                value={opt.value}
-                checked={state.status === opt.value}
-                onChange={() => onChange(feature.id, 'status', opt.value)}
-                className="sr-only"
-              />
-              <span className={`w-3 h-3 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                state.status === opt.value
-                  ? opt.value === 'third-party'
-                    ? 'border-emerald-500'
-                    : opt.value === 'activated'
-                    ? 'border-blue-500'
-                    : 'border-gray-400'
-                  : 'border-gray-300'
-              }`}>
-                {state.status === opt.value && (
-                  <span className={`w-1.5 h-1.5 rounded-full ${
-                    opt.value === 'third-party'
-                      ? 'bg-emerald-500'
-                      : opt.value === 'activated'
-                      ? 'bg-blue-500'
-                      : 'bg-gray-400'
-                  }`} />
-                )}
-              </span>
-              {opt.label}
-            </label>
-          ))}
+        <div
+          role="radiogroup"
+          aria-label={`Status for ${feature.name}`}
+          className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5"
+        >
+          {STATUS_OPTIONS.map(opt => {
+            const active = state.status === opt.value
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => onChange(feature.id, 'status', active ? 'none' : opt.value)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all cursor-pointer ${
+                  active
+                    ? `${opt.activeClass} shadow-sm`
+                    : 'bg-transparent border-transparent text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {opt.label}
+              </button>
+            )
+          })}
         </div>
 
-        <div className="flex flex-col items-end gap-1">
-          <span className="text-xs text-gray-400 whitespace-nowrap">Cost per user/month</span>
+        <div className="flex flex-col items-end">
           <div className="relative w-24">
             <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
             <input
               {...costInput}
-              className="w-full pl-6 pr-2 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c] text-right"
+              aria-label={`Cost per user per month for ${feature.name}`}
+              className="w-full pl-6 pr-2 py-1.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c] text-right"
             />
           </div>
           {state.status === 'third-party' && (
-            <span className="text-xs font-semibold text-red-600 whitespace-nowrap">
-              Saving {formatCurrency(state.cost * userCount * 12)}/yr
+            <span className="text-xs font-semibold text-red-600 whitespace-nowrap mt-1">
+              Save {formatCurrency(state.cost * userCount * 12)}/yr
             </span>
           )}
         </div>
