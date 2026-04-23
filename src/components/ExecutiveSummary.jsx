@@ -43,14 +43,18 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {licenseName} Value Assessment
-        </h1>
-        <p className="text-gray-500 mb-8">
-          Summary for {userCount} users at ${monthlyCost}/user/month
-        </p>
+      <div className="bg-[#1d2d5c] border-b-4 border-[#f59e0b]">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            {licenseName} Value Assessment
+          </h1>
+          <p className="text-slate-300">
+            Summary for {userCount} users at ${monthlyCost}/user/month
+          </p>
+        </div>
+      </div>
 
+      <main className="max-w-5xl mx-auto px-4 pb-8 pt-8">
         {/* Key Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <MetricCard label="Annual License Spend" value={formatCurrency(annualSpend)} color="text-gray-900" bg="bg-white" />
@@ -61,7 +65,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
 
         {/* Value Realization Bar */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 shadow-sm">
-          <h2 className="font-semibold text-gray-900 mb-4">Value Realization Breakdown</h2>
+          <h2 className="font-semibold text-[#1d2d5c] mb-4">Value Realization Breakdown</h2>
           <div className="w-full h-8 bg-gray-100 rounded-full overflow-hidden flex">
             {realizedValue > 0 && (
               <div
@@ -125,7 +129,7 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
 
         {/* Recommendations */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mt-8 shadow-sm">
-          <h2 className="font-semibold text-gray-900 mb-3">Recommendations</h2>
+          <h2 className="font-semibold text-[#1d2d5c] mb-3">Recommendations</h2>
           <ul className="space-y-2 text-sm text-gray-600">
             {thirdPartyFeatures.length > 0 && (
               <li className="flex items-start gap-2">
@@ -183,7 +187,7 @@ function MetricCard({ label, value, color, bg }) {
 function FeatureSection({ title, subtitle, features, badgeColor, badgeLabel }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4 shadow-sm">
-      <h2 className="font-semibold text-gray-900 mb-1">{title}</h2>
+      <h2 className="font-semibold text-[#1d2d5c] mb-1">{title}</h2>
       <p className="text-sm text-gray-500 mb-4">{subtitle}</p>
       <div className="divide-y divide-gray-100">
         {features.map(feature => (
