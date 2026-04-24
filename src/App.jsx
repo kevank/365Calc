@@ -221,13 +221,14 @@ function App() {
         </div>
       </main>
 
-      <Questionnaire
-        isOpen={showQuestionnaire}
-        onClose={() => setShowQuestionnaire(false)}
-        selectedLicense={selectedLicense}
-        featureLookup={FEATURE_LOOKUP}
-        onApplyAnswer={handleQuestionnaireAnswer}
-      />
+      {showQuestionnaire && (
+        <Questionnaire
+          onClose={() => setShowQuestionnaire(false)}
+          selectedLicense={selectedLicense}
+          featureLookup={FEATURE_LOOKUP}
+          onApplyAnswer={handleQuestionnaireAnswer}
+        />
+      )}
     </div>
   )
 }
