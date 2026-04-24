@@ -35,7 +35,7 @@ function App() {
   const [showSummary, setShowSummary] = useState(false)
   const [featureStates, setFeatureStates] = useState(buildInitialFeatureStates)
   const [activeCategoryId, setActiveCategoryId] = useState(null)
-  const [showQuestionnaire, setShowQuestionnaire] = useState(false)
+  const [showQuestionnaire, setShowQuestionnaire] = useState(true)
 
   const selectedLicense = getLicense(selectedLicenseId)
 
