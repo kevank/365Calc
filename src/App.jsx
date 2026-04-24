@@ -72,7 +72,6 @@ function App() {
 
         if (state.status === 'third-party') {
           annualSavings += featureAnnualValue
-          realizedValue += featureAnnualValue
         } else if (state.status === 'activated') {
           realizedValue += featureAnnualValue
         }
