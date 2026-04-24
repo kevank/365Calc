@@ -3,7 +3,6 @@ import { QUESTIONS } from '../data/questionnaire'
 import aitLogo from '../assets/ait-logo.png'
 
 export default function Questionnaire({
-  isOpen,
   onClose,
   selectedLicense,
   featureLookup,
@@ -12,18 +11,6 @@ export default function Questionnaire({
   const [view, setView] = useState('intro')
   const [step, setStep] = useState(0)
   const [appliedTotal, setAppliedTotal] = useState(0)
-  const [lastOpen, setLastOpen] = useState(isOpen)
-
-  if (isOpen !== lastOpen) {
-    setLastOpen(isOpen)
-    if (isOpen) {
-      setView('intro')
-      setStep(0)
-      setAppliedTotal(0)
-    }
-  }
-
-  if (!isOpen) return null
 
   const current = view === 'question' ? QUESTIONS[step] : null
 
