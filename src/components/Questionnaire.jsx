@@ -96,7 +96,7 @@ export default function Questionnaire({
 
             {featuresInLicense.length > 0 ? (
               <p className="text-xs text-gray-500 mb-5">
-                Answering <span className="font-semibold text-emerald-600">Yes</span> will pre-fill {featuresInLicense.length} feature{featuresInLicense.length === 1 ? '' : 's'} in <span className="font-medium text-gray-700">{selectedLicense.shortName}</span> as Third-party.
+                Pre-fills {featuresInLicense.length} feature{featuresInLicense.length === 1 ? '' : 's'} in <span className="font-medium text-gray-700">{selectedLicense.shortName}</span> as Third-party.
               </p>
             ) : (
               <p className="text-xs text-amber-600 mb-5">
