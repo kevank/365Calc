@@ -4,6 +4,7 @@ import Header from './components/Header'
 import OrganizationProfile from './components/OrganizationProfile'
 import SummaryBar from './components/SummaryBar'
 import FeatureCategory from './components/FeatureCategory'
+import CategoryNav from './components/CategoryNav'
 import ExecutiveSummary from './components/ExecutiveSummary'
 
 const buildInitialFeatureStates = () => {
@@ -24,6 +25,7 @@ function App() {
   const [monthlyCost, setMonthlyCost] = useState(getLicense(DEFAULT_LICENSE_ID).monthlyCost)
   const [showSummary, setShowSummary] = useState(false)
   const [featureStates, setFeatureStates] = useState(buildInitialFeatureStates)
+  const [activeCategoryId, setActiveCategoryId] = useState(null)
 
   const selectedLicense = getLicense(selectedLicenseId)
 
@@ -49,6 +51,11 @@ function App() {
       .filter(cat => cat.features.length > 0)
   }, [selectedLicenseId])
 
+  const activeCategory = useMemo(() => {
+    if (filteredCategories.length === 0) return null
+    return filteredCategories.find(c => c.id === activeCategoryId) || filteredCategories[0]
+  }, [filteredCategories, activeCategoryId])
+
   const calculations = useMemo(() => {
     const annualSpend = userCount * monthlyCost * 12
 
@@ -65,7 +72,6 @@ function App() {
 
         if (state.status === 'third-party') {
           annualSavings += featureAnnualValue
-          realizedValue += featureAnnualValue
         } else if (state.status === 'activated') {
           realizedValue += featureAnnualValue
         }
@@ -93,6 +99,7 @@ function App() {
     setMonthlyCost(getLicense(DEFAULT_LICENSE_ID).monthlyCost)
     setFeatureStates(buildInitialFeatureStates())
     setShowSummary(false)
+    setActiveCategoryId(null)
   }, [])
 
   if (showSummary) {
@@ -158,15 +165,26 @@ function App() {
               </p>
             </div>
 
-            {filteredCategories.map(category => (
-              <FeatureCategory
-                key={category.id}
-                category={category}
+            <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-6 lg:items-start">
+              <CategoryNav
+                categories={filteredCategories}
                 featureStates={featureStates}
-                onFeatureChange={handleFeatureChange}
-                userCount={userCount}
+                activeId={activeCategory?.id}
+                onSelect={setActiveCategoryId}
               />
-            ))}
+
+              <div className="mt-4 lg:mt-0">
+                {activeCategory && (
+                  <FeatureCategory
+                    key={activeCategory.id}
+                    category={activeCategory}
+                    featureStates={featureStates}
+                    onFeatureChange={handleFeatureChange}
+                    userCount={userCount}
+                  />
+                )}
+              </div>
+            </div>
           </section>
         </div>
       </main>

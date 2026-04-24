@@ -1,5 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useDecimalInput } from '../hooks/useDecimalInput'
+import { getCategoryColors } from '../data/categoryColors'
 
 const iconMap = {
   shield: (
@@ -60,33 +61,23 @@ const iconMap = {
 }
 
 export default function FeatureCategory({ category, featureStates, onFeatureChange, userCount }) {
-  const [expanded, setExpanded] = useState(true)
+  const colors = getCategoryColors(category.id)
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[#e5e9f2] text-[#1d2d5c] flex items-center justify-center flex-shrink-0">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex">
+      <div className={`w-1 flex-shrink-0 ${colors.bar}`} />
+      <div className="flex-1 min-w-0">
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${colors.iconBg}`}>
             {iconMap[category.icon]}
           </div>
-          <div className="text-left">
+          <div className="min-w-0">
             <h3 className="font-semibold text-gray-900">{category.name}</h3>
-            <p className="text-sm text-gray-500">{category.description}</p>
+            <p className="text-sm text-gray-500 truncate">{category.description}</p>
           </div>
         </div>
-        <svg
-          className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ${expanded ? 'rotate-180' : ''}`}
-          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
 
-      {expanded && (
-        <div className="border-t border-gray-100">
+        <div>
           {category.features.map((feature, idx) => (
             <FeatureRow
               key={feature.id}
@@ -98,7 +89,7 @@ export default function FeatureCategory({ category, featureStates, onFeatureChan
             />
           ))}
         </div>
-      )}
+      </div>
     </div>
   )
 }

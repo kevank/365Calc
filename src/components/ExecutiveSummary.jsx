@@ -57,10 +57,10 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
       <main className="max-w-5xl mx-auto px-4 pb-8 pt-8">
         {/* Key Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <MetricCard label="Annual License Spend" value={formatCurrency(annualSpend)} color="text-gray-900" bg="bg-white" />
-          <MetricCard label="Total Embedded Value" value={formatCurrency(totalEmbeddedValue)} color="text-[#1d2d5c]" bg="bg-blue-50" />
-          <MetricCard label="Annual Savings" value={formatCurrency(annualSavings)} color="text-emerald-600" bg="bg-emerald-50" />
-          <MetricCard label="Value Realization" value={`${valueRealization}%`} color="text-gray-900" bg="bg-white" />
+          <MetricCard label="Annual License Spend" value={formatCurrency(annualSpend)} />
+          <MetricCard label="Total Embedded Value" value={formatCurrency(totalEmbeddedValue)} />
+          <MetricCard label="Annual Savings" value={formatCurrency(annualSavings)} accent="emerald" />
+          <MetricCard label="Value Realization" value={`${valueRealization}%`} accent="orange" />
         </div>
 
         {/* Value Realization Bar */}
@@ -175,11 +175,23 @@ export default function ExecutiveSummary({ calculations, featureStates, featureC
   )
 }
 
-function MetricCard({ label, value, color, bg }) {
+function MetricCard({ label, value, accent }) {
+  const accentBar =
+    accent === 'emerald' ? 'bg-emerald-400' :
+    accent === 'orange' ? 'bg-[#f59e0b]' :
+    'bg-white/10'
+  const valueColor =
+    accent === 'emerald' ? 'text-emerald-400' :
+    accent === 'orange' ? 'text-[#f59e0b]' :
+    'text-white'
+
   return (
-    <div className={`${bg} rounded-xl border border-gray-200 p-5 text-center shadow-sm`}>
-      <div className="text-xs text-gray-500 mb-1">{label}</div>
-      <div className={`text-2xl font-bold ${color}`}>{value}</div>
+    <div className="bg-[#1d2d5c] rounded-lg shadow-sm overflow-hidden flex">
+      <div className={`w-1 flex-shrink-0 ${accentBar}`} />
+      <div className="flex-1 px-5 py-4">
+        <div className="text-xs font-medium text-slate-300 uppercase tracking-wide mb-1">{label}</div>
+        <div className={`text-2xl font-bold ${valueColor}`}>{value}</div>
+      </div>
     </div>
   )
 }
