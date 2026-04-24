@@ -109,6 +109,7 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
     [onChange, feature.id]
   )
   const costInput = useDecimalInput(state.cost, setCost)
+  const isThirdParty = state.status === 'third-party'
 
   return (
     <div className={`px-6 py-3 ${!isLast ? 'border-b border-gray-50' : ''} hover:bg-gray-50/50 transition-colors`}>
@@ -155,17 +156,27 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
           })}
         </div>
 
-        <div className="flex flex-col items-end">
-          <div className="relative w-24">
-            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
-            <input
-              {...costInput}
-              aria-label={`Cost per user per month for ${feature.name}`}
-              className="w-full pl-6 pr-2 py-1.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c] text-right"
-            />
+        <div className="flex items-end gap-3">
+          <div className="flex flex-col items-end">
+            <span className="text-xs text-gray-400 mb-1 whitespace-nowrap">Tool Cost Per</span>
+            <div className="relative w-24">
+              <span className={`absolute left-2.5 top-1/2 -translate-y-1/2 text-sm ${
+                isThirdParty ? 'text-gray-400' : 'text-gray-300'
+              }`}>$</span>
+              <input
+                {...costInput}
+                disabled={!isThirdParty}
+                aria-label={`Tool cost per user per month for ${feature.name}`}
+                className={`w-full pl-6 pr-2 py-1.5 border rounded-lg text-sm text-right focus:outline-none focus:ring-1 focus:ring-[#1d2d5c]/30 focus:border-[#1d2d5c] ${
+                  isThirdParty
+                    ? 'bg-white border-gray-200 text-gray-900'
+                    : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
+              />
+            </div>
           </div>
-          {state.status === 'third-party' && (
-            <span className="text-xs font-semibold text-red-600 whitespace-nowrap mt-1">
+          {isThirdParty && (
+            <span className="text-xs font-semibold text-red-600 whitespace-nowrap pb-2">
               Save {formatCurrency(state.cost * userCount * 12)}/yr
             </span>
           )}
