@@ -5,6 +5,7 @@ import OrganizationProfile from './components/OrganizationProfile'
 import SummaryBar from './components/SummaryBar'
 import FeatureCategory from './components/FeatureCategory'
 import CategoryNav from './components/CategoryNav'
+import Questionnaire from './components/Questionnaire'
 import ExecutiveSummary from './components/ExecutiveSummary'
 
 const buildInitialFeatureStates = () => {
@@ -19,6 +20,14 @@ const buildInitialFeatureStates = () => {
 
 const getLicense = (id) => licenses.find(l => l.id === id) || licenses.find(l => l.id === DEFAULT_LICENSE_ID)
 
+const FEATURE_LOOKUP = (() => {
+  const map = {}
+  featureCategories.forEach(cat => {
+    cat.features.forEach(f => { map[f.id] = f })
+  })
+  return map
+})()
+
 function App() {
   const [selectedLicenseId, setSelectedLicenseId] = useState(DEFAULT_LICENSE_ID)
   const [userCount, setUserCount] = useState(50)
@@ -26,6 +35,7 @@ function App() {
   const [showSummary, setShowSummary] = useState(false)
   const [featureStates, setFeatureStates] = useState(buildInitialFeatureStates)
   const [activeCategoryId, setActiveCategoryId] = useState(null)
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false)
 
   const selectedLicense = getLicense(selectedLicenseId)
 
@@ -40,6 +50,18 @@ function App() {
       ...prev,
       [featureId]: { ...prev[featureId], [field]: value }
     }))
+  }, [])
+
+  const handleQuestionnaireAnswer = useCallback((featureIds, status) => {
+    if (featureIds.length === 0) return 0
+    setFeatureStates(prev => {
+      const next = { ...prev }
+      featureIds.forEach(id => {
+        if (next[id]) next[id] = { ...next[id], status }
+      })
+      return next
+    })
+    return featureIds.length
   }, [])
 
   const filteredCategories = useMemo(() => {
@@ -145,6 +167,16 @@ function App() {
               annualSpend={calculations.annualSpend}
             />
 
+            <button
+              onClick={() => setShowQuestionnaire(true)}
+              className="w-full bg-white hover:bg-gray-50 border border-gray-200 text-[#1d2d5c] font-medium py-2.5 px-4 rounded-lg transition-colors cursor-pointer shadow-sm flex items-center justify-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Quick Start: pre-fill from 4 questions
+            </button>
+
             <SummaryBar calculations={calculations} />
 
             <button
@@ -188,6 +220,14 @@ function App() {
           </section>
         </div>
       </main>
+
+      <Questionnaire
+        isOpen={showQuestionnaire}
+        onClose={() => setShowQuestionnaire(false)}
+        selectedLicense={selectedLicense}
+        featureLookup={FEATURE_LOOKUP}
+        onApplyAnswer={handleQuestionnaireAnswer}
+      />
     </div>
   )
 }
