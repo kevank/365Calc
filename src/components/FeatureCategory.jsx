@@ -156,9 +156,9 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
           })}
         </div>
 
-        <div className="flex flex-col items-end">
-          <span className="text-xs text-gray-400 mb-1 whitespace-nowrap">Tool Cost Per</span>
-          <div className="flex items-center gap-3">
+        <div className="flex items-end gap-3">
+          <div className="flex flex-col items-end">
+            <span className="text-xs text-gray-400 mb-1 whitespace-nowrap">Tool Cost Per</span>
             <div className="relative w-24">
               <span className={`absolute left-2.5 top-1/2 -translate-y-1/2 text-sm ${
                 isThirdParty ? 'text-gray-400' : 'text-gray-300'
@@ -174,12 +174,12 @@ function FeatureRow({ feature, state, onChange, userCount, isLast }) {
                 }`}
               />
             </div>
-            {isThirdParty && (
-              <span className="text-xs font-semibold text-red-600 whitespace-nowrap">
-                Save {formatCurrency(state.cost * userCount * 12)}/yr
-              </span>
-            )}
           </div>
+          {isThirdParty && (
+            <span className="text-xs font-semibold text-red-600 whitespace-nowrap pb-2">
+              Save {formatCurrency(state.cost * userCount * 12)}/yr
+            </span>
+          )}
         </div>
       </div>
     </div>
