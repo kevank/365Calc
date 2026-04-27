@@ -7,6 +7,7 @@ export const LICENSE_IDS = {
   E1: 'e1',
   E3: 'e3',
   E5: 'e5',
+  E7: 'e7',
 }
 
 export const licenses = [
@@ -17,6 +18,7 @@ export const licenses = [
   { id: 'e1', name: 'Office 365 E1', shortName: 'Office 365 E1', tier: 'enterprise', monthlyCost: 10.00 },
   { id: 'e3', name: 'Microsoft 365 E3', shortName: 'Microsoft 365 E3', tier: 'enterprise', monthlyCost: 36.75 },
   { id: 'e5', name: 'Microsoft 365 E5', shortName: 'Microsoft 365 E5', tier: 'enterprise', monthlyCost: 57.75 },
+  { id: 'e7', name: 'Microsoft 365 E7 (Frontier Suite)', shortName: 'Microsoft 365 E7', tier: 'enterprise', monthlyCost: 99.00 },
 ]
 
 export const DEFAULT_LICENSE_ID = 'premium'
@@ -24,13 +26,14 @@ export const DEFAULT_LICENSE_ID = 'premium'
 export const BUSINESS_PREMIUM_MONTHLY_COST =
   licenses.find(l => l.id === DEFAULT_LICENSE_ID).monthlyCost
 
-const ALL_BUSINESS_AND_ENTERPRISE = ['basic', 'apps', 'standard', 'premium', 'e1', 'e3', 'e5']
-const TEAMS_AND_EXCHANGE = ['basic', 'standard', 'premium', 'e1', 'e3', 'e5']
-const DESKTOP_APPS_LICENSES = ['apps', 'standard', 'premium', 'e3', 'e5']
-const SECURITY_P1 = ['premium', 'e3', 'e5']
-const ENTERPRISE = ['e1', 'e3', 'e5']
-const E3_AND_E5 = ['e3', 'e5']
-const E5_ONLY = ['e5']
+const ALL_BUSINESS_AND_ENTERPRISE = ['basic', 'apps', 'standard', 'premium', 'e1', 'e3', 'e5', 'e7']
+const TEAMS_AND_EXCHANGE = ['basic', 'standard', 'premium', 'e1', 'e3', 'e5', 'e7']
+const DESKTOP_APPS_LICENSES = ['apps', 'standard', 'premium', 'e3', 'e5', 'e7']
+const SECURITY_P1 = ['premium', 'e3', 'e5', 'e7']
+const ENTERPRISE = ['e1', 'e3', 'e5', 'e7']
+const E3_AND_HIGHER = ['e3', 'e5', 'e7']
+const E5_AND_HIGHER = ['e5', 'e7']
+const E7_ONLY = ['e7']
 const PREMIUM_ONLY = ['premium']
 
 export const featureCategories = [
@@ -78,7 +81,7 @@ export const featureCategories = [
         description: 'Online appointment scheduling and calendar integration',
         competitors: 'Calendly, Acuity Scheduling, YouCanBook.me',
         defaultCost: 3.00,
-        includedIn: ['basic', 'standard', 'premium', 'e3', 'e5'],
+        includedIn: ['basic', 'standard', 'premium', 'e3', 'e5', 'e7'],
       },
       {
         id: 'loop',
@@ -86,7 +89,7 @@ export const featureCategories = [
         description: 'Co-creation workspace with shared components across apps',
         competitors: 'Notion, Coda, Confluence',
         defaultCost: 3.00,
-        includedIn: ['basic', 'standard', 'premium', 'e3', 'e5'],
+        includedIn: ['basic', 'standard', 'premium', 'e3', 'e5', 'e7'],
       },
       {
         id: 'clipchamp',
@@ -94,7 +97,7 @@ export const featureCategories = [
         description: 'Web-based video creation, editing, and screen recording',
         competitors: 'Camtasia, Descript, Loom, Adobe Premiere Rush',
         defaultCost: 4.00,
-        includedIn: ['basic', 'standard', 'premium', 'e3', 'e5'],
+        includedIn: ['basic', 'standard', 'premium', 'e3', 'e5', 'e7'],
       },
     ],
   },
@@ -118,7 +121,7 @@ export const featureCategories = [
         description: 'Large mailbox with advanced retention and journaling',
         competitors: 'Google Workspace Enterprise, Zoho Mail Enterprise',
         defaultCost: 8.00,
-        includedIn: E3_AND_E5,
+        includedIn: E3_AND_HIGHER,
       },
       {
         id: 'email-archiving',
@@ -166,7 +169,7 @@ export const featureCategories = [
         description: 'Registration pages, attendee reporting, branded webinars',
         competitors: 'GoToWebinar, Zoom Webinars, ON24',
         defaultCost: 3.00,
-        includedIn: ['standard', 'premium', 'e3', 'e5'],
+        includedIn: ['standard', 'premium', 'e3', 'e5', 'e7'],
       },
       {
         id: 'teams-live-events',
@@ -214,7 +217,7 @@ export const featureCategories = [
         description: 'Unlimited per-user storage for enterprise deployments',
         competitors: 'Box Enterprise, Google Workspace Enterprise',
         defaultCost: 8.00,
-        includedIn: E3_AND_E5,
+        includedIn: E3_AND_HIGHER,
       },
       {
         id: 'sharepoint-smb',
@@ -262,7 +265,7 @@ export const featureCategories = [
         description: 'Risk-based conditional access and automated remediation',
         competitors: 'CrowdStrike Falcon Identity, Beyond Identity, RSA',
         defaultCost: 3.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'pim',
@@ -270,7 +273,15 @@ export const featureCategories = [
         description: 'Just-in-time and time-bound access to privileged roles',
         competitors: 'CyberArk, BeyondTrust, Delinea',
         defaultCost: 5.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
+      },
+      {
+        id: 'entra-suite',
+        name: 'Microsoft Entra Suite',
+        description: 'Internet Access (SSE), Private Access (ZTNA), Verified ID, and ID Governance',
+        competitors: 'Zscaler ZPA/ZIA, Cloudflare Zero Trust, Netskope, Okta Workforce Identity',
+        defaultCost: 12.00,
+        includedIn: E7_ONLY,
       },
     ],
   },
@@ -310,7 +321,7 @@ export const featureCategories = [
         description: 'Enterprise edition with Credential Guard, Application Guard',
         competitors: 'Per-device Windows VL, Enterprise LTSC',
         defaultCost: 7.00,
-        includedIn: E3_AND_E5,
+        includedIn: E3_AND_HIGHER,
       },
       {
         id: 'endpoint-analytics',
@@ -318,7 +329,15 @@ export const featureCategories = [
         description: 'Device performance insights and proactive remediation',
         competitors: 'Nexthink, 1E Tachyon, SysTrack',
         defaultCost: 3.00,
-        includedIn: E3_AND_E5,
+        includedIn: E3_AND_HIGHER,
+      },
+      {
+        id: 'intune-suite',
+        name: 'Intune Suite (Advanced)',
+        description: 'Endpoint Privilege Management, Remote Help, Advanced Endpoint Analytics, Cloud PKI',
+        competitors: 'BeyondTrust EPM, Tanium, ConnectWise ScreenConnect',
+        defaultCost: 10.00,
+        includedIn: E7_ONLY,
       },
     ],
   },
@@ -350,7 +369,7 @@ export const featureCategories = [
         description: 'Full EDR, threat hunting, and automated investigation',
         competitors: 'CrowdStrike Falcon Complete, SentinelOne Complete',
         defaultCost: 7.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'defender-o365-p1',
@@ -366,7 +385,7 @@ export const featureCategories = [
         description: 'Threat Explorer, Attack Simulator, automated response',
         competitors: 'Proofpoint Threat Response, Abnormal Security',
         defaultCost: 5.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'defender-identity',
@@ -374,7 +393,7 @@ export const featureCategories = [
         description: 'Detect identity-based attacks against on-prem Active Directory',
         competitors: 'Semperis, Attivo Networks, Quest',
         defaultCost: 5.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'defender-cloud-apps',
@@ -382,7 +401,7 @@ export const featureCategories = [
         description: 'Cloud app discovery, data protection, and threat detection',
         competitors: 'Netskope, Zscaler, Palo Alto Prisma',
         defaultCost: 5.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'attack-surface-reduction',
@@ -430,7 +449,7 @@ export const featureCategories = [
         description: 'Auto-apply sensitivity labels based on content inspection',
         competitors: 'Varonis, Netwrix, BigID',
         defaultCost: 3.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'double-key-encryption',
@@ -438,7 +457,7 @@ export const featureCategories = [
         description: 'Customer-held key plus Microsoft key for highest-sensitivity data',
         competitors: 'Virtru, Fortanix, Vaultree',
         defaultCost: 2.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
     ],
   },
@@ -462,7 +481,7 @@ export const featureCategories = [
         description: 'Search, hold, and export content across M365 workloads',
         competitors: 'Relativity, Logikcull, Nuix',
         defaultCost: 4.00,
-        includedIn: E3_AND_E5,
+        includedIn: E3_AND_HIGHER,
       },
       {
         id: 'ediscovery-premium',
@@ -470,7 +489,7 @@ export const featureCategories = [
         description: 'End-to-end legal workflow with review sets and analytics',
         competitors: 'Relativity Advanced, Everlaw, DISCO',
         defaultCost: 5.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'insider-risk',
@@ -478,7 +497,7 @@ export const featureCategories = [
         description: 'Detect and investigate risky insider activity',
         competitors: 'DTEX, Proofpoint ITM, Code42',
         defaultCost: 4.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'communication-compliance',
@@ -486,7 +505,7 @@ export const featureCategories = [
         description: 'Detect inappropriate communications across Teams and email',
         competitors: 'Smarsh, Global Relay, Theta Lake',
         defaultCost: 3.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'records-management',
@@ -494,7 +513,7 @@ export const featureCategories = [
         description: 'Retention labels, disposition review, proof of destruction',
         competitors: 'OpenText, IBM FileNet, Veritas',
         defaultCost: 3.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'customer-lockbox',
@@ -502,7 +521,7 @@ export const featureCategories = [
         description: 'Explicit approval workflow for Microsoft engineer data access',
         competitors: 'Custom access review tooling',
         defaultCost: 2.00,
-        includedIn: E3_AND_E5,
+        includedIn: E3_AND_HIGHER,
       },
       {
         id: 'customer-key',
@@ -510,7 +529,7 @@ export const featureCategories = [
         description: 'Customer-provided encryption keys for data at rest',
         competitors: 'Bring-your-own-key solutions, HashiCorp Vault',
         defaultCost: 2.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
     ],
   },
@@ -534,7 +553,7 @@ export const featureCategories = [
         description: 'Interactive dashboards, reports, and data modeling',
         competitors: 'Tableau, Looker, Qlik Sense, Domo',
         defaultCost: 10.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
       {
         id: 'workplace-analytics',
@@ -542,7 +561,7 @@ export const featureCategories = [
         description: 'Organization-wide collaboration and productivity analytics',
         competitors: 'Culture Amp, Time is Ltd, Worklytics',
         defaultCost: 4.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
       },
     ],
   },
@@ -558,7 +577,31 @@ export const featureCategories = [
         description: 'Cloud PBX with call control, auto-attendants, and call queues',
         competitors: 'RingCentral, 8x8, Vonage, Zoom Phone',
         defaultCost: 8.00,
-        includedIn: E5_ONLY,
+        includedIn: E5_AND_HIGHER,
+      },
+    ],
+  },
+  {
+    id: 'ai',
+    name: 'AI & Copilot',
+    description: 'Generative AI, autonomous agents, and integrated assistance across M365',
+    icon: 'sparkle',
+    features: [
+      {
+        id: 'm365-copilot',
+        name: 'Microsoft 365 Copilot',
+        description: 'AI assistant integrated into Word, Excel, PowerPoint, Outlook, and Teams',
+        competitors: 'ChatGPT Enterprise, Google Gemini Enterprise, Anthropic Claude Enterprise',
+        defaultCost: 30.00,
+        includedIn: E7_ONLY,
+      },
+      {
+        id: 'agent-365',
+        name: 'Agent 365',
+        description: 'Build, govern, and run autonomous AI agents across the M365 stack',
+        competitors: 'Salesforce Agentforce, Glean, Writer Palmyra, custom Copilot Studio agents',
+        defaultCost: 15.00,
+        includedIn: E7_ONLY,
       },
     ],
   },
