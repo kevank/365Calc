@@ -67,6 +67,12 @@ export const CATEGORY_COLORS = {
     tintText: 'text-sky-700',
     iconBg: 'bg-sky-100 text-sky-700',
   },
+  ai: {
+    bar: 'bg-fuchsia-500',
+    tint: 'bg-fuchsia-50',
+    tintText: 'text-fuchsia-700',
+    iconBg: 'bg-fuchsia-100 text-fuchsia-700',
+  },
 }
 
 const DEFAULT_COLORS = {
