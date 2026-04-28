@@ -8,11 +8,34 @@ import CategoryNav from './components/CategoryNav'
 import Questionnaire from './components/Questionnaire'
 import ExecutiveSummary from './components/ExecutiveSummary'
 
+// Features assumed active out of the box for any M365 tenant (no admin
+// setup required). The Quick Start questionnaire and manual edits can
+// still flip them.
+const DEFAULT_ACTIVATED_FEATURES = new Set([
+  'office-web-mobile',
+  'office-desktop',
+  'teams-smb',
+  'teams-enterprise',
+  'email-50gb',
+  'email-100gb',
+  'onedrive-1tb',
+  'onedrive-unlimited',
+  'exchange-online-protection',
+  'sharepoint-smb',
+  'sharepoint-enterprise',
+  'planner',
+  'whiteboard',
+  'viva-insights',
+])
+
 const buildInitialFeatureStates = () => {
   const initial = {}
   featureCategories.forEach(cat => {
     cat.features.forEach(feature => {
-      initial[feature.id] = { status: 'none', cost: feature.defaultCost }
+      initial[feature.id] = {
+        status: DEFAULT_ACTIVATED_FEATURES.has(feature.id) ? 'activated' : 'none',
+        cost: feature.defaultCost,
+      }
     })
   })
   return initial
